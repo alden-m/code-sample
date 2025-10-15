@@ -6,7 +6,7 @@ public class WebsiteUpdateRequest
 {
     public Guid Id { get; set; }
     public string? Name { get; set; }
-    public string? Url { get; set; }
+    public string? Endpoint { get; set; }
 
     // Builder methods
     public static WebsiteUpdateRequest Empty() => new();
@@ -18,7 +18,7 @@ public class WebsiteUpdateRequest
         {
             Id = id ?? Guid.NewGuid(),
             Name = faker.Company.CompanyName(),
-            Url = faker.Internet.Url()
+            Endpoint = faker.Internet.Url()
         };
     }
 
@@ -34,9 +34,9 @@ public class WebsiteUpdateRequest
         return this;
     }
 
-    public WebsiteUpdateRequest WithUrl(string? url)
+    public WebsiteUpdateRequest WithEndpoint(string? endpoint)
     {
-        Url = url;
+        Endpoint = endpoint;
         return this;
     }
 }

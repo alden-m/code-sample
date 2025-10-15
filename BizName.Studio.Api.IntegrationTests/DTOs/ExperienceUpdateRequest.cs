@@ -5,12 +5,12 @@ namespace BizName.Studio.Api.IntegrationTests.DTOs;
 public class ExperienceUpdateRequest
 {
     public Guid Id { get; set; }
-    public Guid WebsiteId { get; set; }
+    public Guid SourceId { get; set; }
     public string? Name { get; set; }
-    public List<object>? Conditions { get; set; } = new();
-    public List<object>? Actions { get; set; } = new();
-    public bool IsPublished { get; set; }
-    public Dictionary<string, string>? Metadata { get; set; } = new();
+    public List<object>? Rules { get; set; } = new();
+    public List<object>? Transformations { get; set; } = new();
+    public bool IsActive { get; set; }
+    public Dictionary<string, string>? Configuration { get; set; } = new();
 
     public static ExperienceUpdateRequest Valid(Guid experienceId)
     {
@@ -18,12 +18,12 @@ public class ExperienceUpdateRequest
         return new ExperienceUpdateRequest
         {
             Id = experienceId,
-            WebsiteId = Guid.NewGuid(),
+            SourceId = Guid.NewGuid(),
             Name = faker.Commerce.ProductName(),
-            Conditions = new List<object>(),
-            Actions = new List<object>(),
-            IsPublished = false,
-            Metadata = new Dictionary<string, string>()
+            Rules = new List<object>(),
+            Transformations = new List<object>(),
+            IsActive = false,
+            Configuration = new Dictionary<string, string>()
         };
     }
 
@@ -35,9 +35,9 @@ public class ExperienceUpdateRequest
         return this;
     }
 
-    public ExperienceUpdateRequest WithWebsiteId(Guid websiteId)
+    public ExperienceUpdateRequest WithSourceId(Guid sourceId)
     {
-        WebsiteId = websiteId;
+        SourceId = sourceId;
         return this;
     }
 
@@ -47,27 +47,27 @@ public class ExperienceUpdateRequest
         return this;
     }
 
-    public ExperienceUpdateRequest WithIsPublished(bool isPublished)
+    public ExperienceUpdateRequest WithIsActive(bool isActive)
     {
-        IsPublished = isPublished;
+        IsActive = isActive;
         return this;
     }
 
-    public ExperienceUpdateRequest WithConditions(List<object>? conditions)
+    public ExperienceUpdateRequest WithRules(List<object>? rules)
     {
-        Conditions = conditions;
+        Rules = rules;
         return this;
     }
 
-    public ExperienceUpdateRequest WithActions(List<object>? actions)
+    public ExperienceUpdateRequest WithTransformations(List<object>? transformations)
     {
-        Actions = actions;
+        Transformations = transformations;
         return this;
     }
 
-    public ExperienceUpdateRequest WithMetadata(Dictionary<string, string>? metadata)
+    public ExperienceUpdateRequest WithConfiguration(Dictionary<string, string>? configuration)
     {
-        Metadata = metadata;
+        Configuration = configuration;
         return this;
     }
 }

@@ -4,31 +4,31 @@ namespace BizName.Studio.Api.IntegrationTests.DTOs;
 
 public class ExperienceCreateRequest
 {
-    public Guid WebsiteId { get; set; }
+    public Guid SourceId { get; set; }
     public string? Name { get; set; }
-    public List<object>? Conditions { get; set; } = new();
-    public List<object>? Actions { get; set; } = new();
-    public bool IsPublished { get; set; }
-    public Dictionary<string, string>? Metadata { get; set; } = new();
+    public List<object>? Rules { get; set; } = new();
+    public List<object>? Transformations { get; set; } = new();
+    public bool IsActive { get; set; }
+    public Dictionary<string, string>? Configuration { get; set; } = new();
 
     public static ExperienceCreateRequest Valid()
     {
         var faker = new Faker();
         return new ExperienceCreateRequest
         {
-            WebsiteId = Guid.NewGuid(),
+            SourceId = Guid.NewGuid(),
             Name = faker.Commerce.ProductName(),
-            Conditions = new List<object>(),
-            Actions = new List<object>(),
-            IsPublished = false,
-            Metadata = new Dictionary<string, string>()
+            Rules = new List<object>(),
+            Transformations = new List<object>(),
+            IsActive = false,
+            Configuration = new Dictionary<string, string>()
         };
     }
 
     public ExperienceCreateRequest WithInsertHtmlAction()
     {
-        Actions ??= new List<object>();
-        Actions.Add(new Dictionary<string, object>
+        Transformations ??= new List<object>();
+        Transformations.Add(new Dictionary<string, object>
         {
             { "selector", ".test-element" },
             { "html", "<div class='inserted-content'>Test HTML</div>" },
@@ -40,9 +40,9 @@ public class ExperienceCreateRequest
 
     public static ExperienceCreateRequest Empty() => new();
 
-    public ExperienceCreateRequest WithWebsiteId(Guid websiteId)
+    public ExperienceCreateRequest WithSourceId(Guid sourceId)
     {
-        WebsiteId = websiteId;
+        SourceId = sourceId;
         return this;
     }
 
@@ -52,27 +52,27 @@ public class ExperienceCreateRequest
         return this;
     }
 
-    public ExperienceCreateRequest WithIsPublished(bool isPublished)
+    public ExperienceCreateRequest WithIsActive(bool isActive)
     {
-        IsPublished = isPublished;
+        IsActive = isActive;
         return this;
     }
 
-    public ExperienceCreateRequest WithConditions(List<object>? conditions)
+    public ExperienceCreateRequest WithRules(List<object>? rules)
     {
-        Conditions = conditions;
+        Rules = rules;
         return this;
     }
 
-    public ExperienceCreateRequest WithActions(List<object>? actions)
+    public ExperienceCreateRequest WithTransformations(List<object>? transformations)
     {
-        Actions = actions;
+        Transformations = transformations;
         return this;
     }
 
-    public ExperienceCreateRequest WithMetadata(Dictionary<string, string>? metadata)
+    public ExperienceCreateRequest WithConfiguration(Dictionary<string, string>? configuration)
     {
-        Metadata = metadata;
+        Configuration = configuration;
         return this;
     }
 }

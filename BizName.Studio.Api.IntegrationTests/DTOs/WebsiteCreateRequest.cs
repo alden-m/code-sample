@@ -5,7 +5,7 @@ namespace BizName.Studio.Api.IntegrationTests.DTOs;
 public class WebsiteCreateRequest
 {
     public string? Name { get; set; }
-    public string? Url { get; set; }
+    public string? Endpoint { get; set; }
 
     // Builder methods
     public static WebsiteCreateRequest Empty() => new();
@@ -16,7 +16,7 @@ public class WebsiteCreateRequest
         return new WebsiteCreateRequest
         {
             Name = faker.Company.CompanyName(),
-            Url = faker.Internet.Url()
+            Endpoint = faker.Internet.Url()
         };
     }
 
@@ -26,9 +26,9 @@ public class WebsiteCreateRequest
         return this;
     }
 
-    public WebsiteCreateRequest WithUrl(string? url)
+    public WebsiteCreateRequest WithEndpoint(string? endpoint)
     {
-        Url = url;
+        Endpoint = endpoint;
         return this;
     }
 }
