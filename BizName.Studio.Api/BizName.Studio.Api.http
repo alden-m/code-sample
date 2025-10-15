@@ -1,0 +1,6 @@
+@Persona.Studio.Api_HostAddress = https://localhost:7132
+
+GET {{Persona.Studio.Api_HostAddress}}/files/ebdbb1dd-0c90-4564-39d0-08dd2df365c8/sdk.js
+Accept: application/json
+
+###
