@@ -3,6 +3,9 @@ using BizName.Studio.Contracts.Common;
 
 namespace BizName.Studio.Contracts.Websites;
 
+/// <summary>
+/// Represents a data source endpoint configuration
+/// </summary>
 public class Website : IEntity
 {
     public Guid Id { get; set; }
@@ -11,11 +14,17 @@ public class Website : IEntity
     
     public string? Description { get; set; } = string.Empty;
     
-    public string? Url { get; set; }
+    public string? Endpoint { get; set; }
     
     public DateTimeOffset CreatedAt { get; set; }
     
     public DateTimeOffset UpdatedAt { get; set; }
+    
+    public string? ApiKey { get; set; } = string.Empty;
+    
+    public int TimeoutSeconds { get; set; } = 30;
+    
+    public bool RequiresAuthentication { get; set; }
 }
 
 /// <summary>
@@ -41,9 +50,9 @@ public class WebsiteValidator : AbstractValidator<Website>
             .MaximumLength(500)
             .WithMessage("Website description must not exceed 500 characters");
 
-        RuleFor(x => x.Url)
+        RuleFor(x => x.Endpoint)
             .Must(BeValidUrlOrEmpty)
-            .WithMessage("Website URL must be a valid HTTP or HTTPS URL");
+            .WithMessage("Endpoint URL must be a valid HTTP or HTTPS URL");
 
         RuleFor(x => x.CreatedAt)
             .NotEmpty()
