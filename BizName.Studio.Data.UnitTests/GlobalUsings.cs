@@ -1,0 +1,11 @@
+global using Xunit;
+global using FluentAssertions;
+global using NSubstitute;
+global using Bogus;
+global using System.Text.Json;
+global using System.Text.Json.Nodes;
+global using Microsoft.Azure.Cosmos;
+global using BizName.Studio.Contracts.Common;
+global using BizName.Studio.Data.Repositories.Impl;
+global using BizName.Studio.Data.Database;
+global using Microsoft.Extensions.Logging;
