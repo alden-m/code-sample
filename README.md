@@ -269,13 +269,4 @@ public static class TestData
 - **Feature flags** for controlled rollouts
 - **Connection string management** with rotation policies
 
-## 🤝 Contributing
-
-This is a private code sample for demonstration purposes. The codebase showcases:
-
-- **Enterprise-grade architecture patterns**
-- **Comprehensive testing methodologies**
-- **Modern .NET development practices**
-- **Cloud-native design principles**
-- **Security-first approach**
 
