@@ -279,10 +279,3 @@ This is a private code sample for demonstration purposes. The codebase showcases
 - **Cloud-native design principles**
 - **Security-first approach**
 
-## 📄 License
-
-This code sample is proprietary and confidential. All rights reserved.
-
----
-
-**Built with ❤️ using .NET 9 and modern software engineering practices.**
