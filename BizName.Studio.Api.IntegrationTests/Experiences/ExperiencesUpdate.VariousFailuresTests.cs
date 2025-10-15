@@ -15,7 +15,7 @@ public class ExperiencesUpdate_VariousFailuresTests(ApiTestFixture fixture) : Ex
         var websiteId = await CreateTestWebsite();
         var nonExistentId = Guid.NewGuid();
         var updateRequest = ExperienceUpdateRequest.Valid(nonExistentId)
-            .WithWebsiteId(websiteId);
+            .WithSourceId(websiteId);
 
         // Act
         var response = await Client.PutAsJsonAsync("/api/experiences", updateRequest);
@@ -48,14 +48,14 @@ public class ExperiencesUpdate_VariousFailuresTests(ApiTestFixture fixture) : Ex
     {
         // Arrange - Create experience with valid website
         var websiteId = await CreateTestWebsite();
-        var initialExperience = ExperienceCreateRequest.Valid().WithWebsiteId(websiteId);
+        var initialExperience = ExperienceCreateRequest.Valid().WithSourceId(websiteId);
         var createResponse = await Client.PostAsJsonAsync("/api/experiences", initialExperience);
         var experienceId = await createResponse.Content.ReadFromJsonAsync<Guid>();
 
         // Arrange - Update with non-existent website ID
         var nonExistentWebsiteId = Guid.NewGuid();
         var updateRequest = ExperienceUpdateRequest.Valid(experienceId)
-            .WithWebsiteId(nonExistentWebsiteId);
+            .WithSourceId(nonExistentWebsiteId);
 
         // Act
         var response = await Client.PutAsJsonAsync("/api/experiences", updateRequest);

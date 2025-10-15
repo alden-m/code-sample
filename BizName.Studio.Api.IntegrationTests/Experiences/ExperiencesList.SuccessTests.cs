@@ -9,7 +9,7 @@ namespace BizName.Studio.Api.IntegrationTests.Experiences;
 public class ExperiencesList_SuccessTests(ApiTestFixture fixture) : ExperiencesTestBase(fixture)
 {
     [Fact]
-    public async Task Get_ValidWebsiteId_Returns200OK()
+    public async Task Get_ValidSourceId_Returns200OK()
     {
         // Arrange
         var websiteId = await CreateTestWebsite();
@@ -23,7 +23,7 @@ public class ExperiencesList_SuccessTests(ApiTestFixture fixture) : ExperiencesT
     }
 
     [Fact]
-    public async Task Get_ValidWebsiteId_ReturnsExperiencesList()
+    public async Task Get_ValidSourceId_ReturnsExperiencesList()
     {
         // Arrange
         var websiteId = await CreateTestWebsite();
@@ -87,7 +87,7 @@ public class ExperiencesList_SuccessTests(ApiTestFixture fixture) : ExperiencesT
         experiences.Should().NotBeNull();
         experiences.Should().Contain(e => e.Id == experienceId1);
         experiences.Should().Contain(e => e.Id == experienceId2);
-        experiences.Should().OnlyContain(e => e.WebsiteId == websiteId);
+        experiences.Should().OnlyContain(e => e.SourceId == websiteId);
     }
 
     [Fact]
@@ -109,6 +109,6 @@ public class ExperiencesList_SuccessTests(ApiTestFixture fixture) : ExperiencesT
         experiences.Should().NotBeNull();
         experiences.Should().HaveCount(1);
         experiences![0].Id.Should().Be(experienceId1);
-        experiences[0].WebsiteId.Should().Be(websiteId1);
+        experiences[0].SourceId.Should().Be(websiteId1);
     }
 }

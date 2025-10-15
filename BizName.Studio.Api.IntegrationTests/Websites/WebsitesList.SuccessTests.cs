@@ -95,7 +95,7 @@ public class WebsitesList_SuccessTests(ApiTestFixture fixture) : WebsitesTestBas
         websites.Should().Contain(w => w.Id == websiteId2);
         websites.Should().OnlyContain(w => w.Id != Guid.Empty);
         websites.Should().OnlyContain(w => !string.IsNullOrEmpty(w.Name));
-        websites.Should().OnlyContain(w => !string.IsNullOrEmpty(w.Url));
+        websites.Should().OnlyContain(w => !string.IsNullOrEmpty(w.Endpoint));
     }
 
 

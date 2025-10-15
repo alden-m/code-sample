@@ -14,7 +14,7 @@ public class ExperiencesCreate_ValidationTests(ApiTestFixture fixture) : Experie
         // Arrange
         var websiteId = await CreateTestWebsite();
         var experience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(websiteId)
+            .WithSourceId(websiteId)
             .WithName("");
 
         // Act
@@ -30,7 +30,7 @@ public class ExperiencesCreate_ValidationTests(ApiTestFixture fixture) : Experie
         // Arrange
         var websiteId = await CreateTestWebsite();
         var experience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(websiteId)
+            .WithSourceId(websiteId)
             .WithName("");
 
         // Act
@@ -47,7 +47,7 @@ public class ExperiencesCreate_ValidationTests(ApiTestFixture fixture) : Experie
         // Arrange
         var websiteId = await CreateTestWebsite();
         var experience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(websiteId)
+            .WithSourceId(websiteId)
             .WithName(null);
 
         // Act
@@ -62,7 +62,7 @@ public class ExperiencesCreate_ValidationTests(ApiTestFixture fixture) : Experie
     {
         // Arrange
         var experience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(Guid.Empty);
+            .WithSourceId(Guid.Empty);
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/experiences", experience);
@@ -78,7 +78,7 @@ public class ExperiencesCreate_ValidationTests(ApiTestFixture fixture) : Experie
         var websiteId = await CreateTestWebsite();
         var longName = new string('a', 101); // Exceeds 100 character limit
         var experience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(websiteId)
+            .WithSourceId(websiteId)
             .WithName(longName);
 
         // Act
@@ -94,7 +94,7 @@ public class ExperiencesCreate_ValidationTests(ApiTestFixture fixture) : Experie
         // Arrange
         var websiteId = await CreateTestWebsite();
         var experience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(websiteId)
+            .WithSourceId(websiteId)
             .WithName("a"); // Less than 2 characters
 
         // Act
@@ -110,8 +110,8 @@ public class ExperiencesCreate_ValidationTests(ApiTestFixture fixture) : Experie
         // Arrange
         var websiteId = await CreateTestWebsite();
         var experience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(websiteId)
-            .WithActions(null);
+            .WithSourceId(websiteId)
+            .WithTransformations(null);
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/experiences", experience);
@@ -126,8 +126,8 @@ public class ExperiencesCreate_ValidationTests(ApiTestFixture fixture) : Experie
         // Arrange
         var websiteId = await CreateTestWebsite();
         var experience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(websiteId)
-            .WithConditions(null);
+            .WithSourceId(websiteId)
+            .WithRules(null);
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/experiences", experience);

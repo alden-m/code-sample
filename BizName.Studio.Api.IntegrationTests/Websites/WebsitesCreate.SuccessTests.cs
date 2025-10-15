@@ -59,7 +59,7 @@ public class WebsitesCreate_SuccessTests(ApiTestFixture fixture) : WebsitesTestB
         
         var website = WebsiteCreateRequest.Valid()
             .WithName(uniqueName)
-            .WithUrl(uniqueUrl);
+            .WithEndpoint(uniqueUrl);
         
         // Act
         var createResponse = await Client.PostAsJsonAsync("/api/websites", website);
@@ -72,6 +72,6 @@ public class WebsitesCreate_SuccessTests(ApiTestFixture fixture) : WebsitesTestB
 
         // Assert - Only test property values
         retrievedWebsite!.Name.Should().Be(uniqueName);
-        retrievedWebsite.Url.Should().Be(uniqueUrl);
+        retrievedWebsite.Endpoint.Should().Be(uniqueUrl);
     }
 }

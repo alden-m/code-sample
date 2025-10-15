@@ -12,7 +12,7 @@ public class WebsitesCreate_ValidationTests(ApiTestFixture fixture) : WebsitesTe
     public async Task Post_MissingName_Returns400BadRequest()
     {
         // Arrange
-        var website = WebsiteCreateRequest.Empty().WithUrl("https://example.com");
+        var website = WebsiteCreateRequest.Empty().WithEndpoint("https://example.com");
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/websites", website);
@@ -25,7 +25,7 @@ public class WebsitesCreate_ValidationTests(ApiTestFixture fixture) : WebsitesTe
     public async Task Post_MissingName_ReturnsValidationErrorForName()
     {
         // Arrange
-        var website = WebsiteCreateRequest.Empty().WithUrl("https://example.com");
+        var website = WebsiteCreateRequest.Empty().WithEndpoint("https://example.com");
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/websites", website);
@@ -39,7 +39,7 @@ public class WebsitesCreate_ValidationTests(ApiTestFixture fixture) : WebsitesTe
     public async Task Post_InvalidUrl_Returns400BadRequest()
     {
         // Arrange
-        var website = WebsiteCreateRequest.Valid().WithUrl("not-a-valid-url");
+        var website = WebsiteCreateRequest.Valid().WithEndpoint("not-a-valid-url");
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/websites", website);
@@ -52,7 +52,7 @@ public class WebsitesCreate_ValidationTests(ApiTestFixture fixture) : WebsitesTe
     public async Task Post_InvalidUrl_ReturnsValidationErrorForUrl()
     {
         // Arrange
-        var website = WebsiteCreateRequest.Valid().WithUrl("not-a-valid-url");
+        var website = WebsiteCreateRequest.Valid().WithEndpoint("not-a-valid-url");
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/websites", website);

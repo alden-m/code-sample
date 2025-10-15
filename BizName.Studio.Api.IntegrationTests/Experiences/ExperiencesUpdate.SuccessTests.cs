@@ -15,9 +15,9 @@ public class ExperiencesUpdate_SuccessTests(ApiTestFixture fixture) : Experience
         var websiteId = await CreateTestWebsite();
         
         var initialExperience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(websiteId)
+            .WithSourceId(websiteId)
             .WithName("Original Experience Name")
-            .WithIsPublished(false);
+            .WithIsActive(false);
         
         var createResponse = await Client.PostAsJsonAsync("/api/experiences", initialExperience);
         createResponse.StatusCode.Should().Be(HttpStatusCode.Created);
@@ -25,10 +25,10 @@ public class ExperiencesUpdate_SuccessTests(ApiTestFixture fixture) : Experience
 
         // Arrange - Prepare update
         var updateRequest = ExperienceUpdateRequest.Valid(experienceId)
-            .WithWebsiteId(websiteId)
+            .WithSourceId(websiteId)
             .WithName("Updated Experience Name")
-            .WithIsPublished(false) // Cannot publish without actions/conditions
-            .WithMetadata(new Dictionary<string, string> { { "key1", "value1" } });
+            .WithIsActive(false) // Cannot publish without actions/conditions
+            .WithConfiguration(new Dictionary<string, string> { { "key1", "value1" } });
 
         // Act
         var updateResponse = await Client.PutAsJsonAsync("/api/experiences", updateRequest);
@@ -38,18 +38,18 @@ public class ExperiencesUpdate_SuccessTests(ApiTestFixture fixture) : Experience
         var updatedResult = await updateResponse.Content.ReadFromJsonAsync<ExperienceResponse>();
         updatedResult.Should().NotBeNull();
         updatedResult!.Id.Should().Be(experienceId);
-        updatedResult.WebsiteId.Should().Be(websiteId);
+        updatedResult.SourceId.Should().Be(websiteId);
         updatedResult.Name.Should().Be("Updated Experience Name");
-        updatedResult.IsPublished.Should().BeFalse();
-        updatedResult.Metadata.Should().ContainKey("key1").WhoseValue.Should().Be("value1");
+        updatedResult.IsActive.Should().BeFalse();
+        updatedResult.Configuration.Should().ContainKey("key1").WhoseValue.Should().Be("value1");
 
         // Assert - Verify persistence
         var getResponse = await Client.GetAsync($"/api/experiences/{experienceId}");
         getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         var retrievedExperience = await getResponse.Content.ReadFromJsonAsync<ExperienceResponse>();
         retrievedExperience!.Name.Should().Be("Updated Experience Name");
-        retrievedExperience.IsPublished.Should().BeFalse();
-        retrievedExperience.Metadata.Should().ContainKey("key1");
+        retrievedExperience.IsActive.Should().BeFalse();
+        retrievedExperience.Configuration.Should().ContainKey("key1");
     }
 
     [Fact]
@@ -59,10 +59,10 @@ public class ExperiencesUpdate_SuccessTests(ApiTestFixture fixture) : Experience
         var websiteId = await CreateTestWebsite();
         
         var initialExperience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(websiteId)
+            .WithSourceId(websiteId)
             .WithName("Initial Name")
-            .WithIsPublished(false) // Start unpublished
-            .WithMetadata(new Dictionary<string, string> { { "initial", "data" } });
+            .WithIsActive(false) // Start unpublished
+            .WithConfiguration(new Dictionary<string, string> { { "initial", "data" } });
         
         var createResponse = await Client.PostAsJsonAsync("/api/experiences", initialExperience);
         createResponse.StatusCode.Should().Be(HttpStatusCode.Created);
@@ -76,12 +76,12 @@ public class ExperiencesUpdate_SuccessTests(ApiTestFixture fixture) : Experience
         var updateRequest = new ExperienceUpdateRequest
         {
             Id = experienceId,
-            WebsiteId = websiteId,
+            SourceId = websiteId,
             Name = "Updated Name Only",
-            IsPublished = initialData!.IsPublished,
-            Metadata = initialData.Metadata,
-            Actions = initialData.Actions ?? new List<object>(),
-            Conditions = initialData.Conditions ?? new List<object>()
+            IsActive = initialData!.IsActive,
+            Configuration = initialData.Configuration,
+            Transformations = initialData.Transformations ?? new List<object>(),
+            Rules = initialData.Rules ?? new List<object>()
         };
 
         // Act
@@ -91,8 +91,8 @@ public class ExperiencesUpdate_SuccessTests(ApiTestFixture fixture) : Experience
         updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         var updatedResult = await updateResponse.Content.ReadFromJsonAsync<ExperienceResponse>();
         updatedResult!.Name.Should().Be("Updated Name Only");
-        updatedResult.IsPublished.Should().Be(initialData.IsPublished);
-        updatedResult.Metadata.Should().BeEquivalentTo(initialData.Metadata);
+        updatedResult.IsActive.Should().Be(initialData.IsActive);
+        updatedResult.Configuration.Should().BeEquivalentTo(initialData.Configuration);
     }
 
 }

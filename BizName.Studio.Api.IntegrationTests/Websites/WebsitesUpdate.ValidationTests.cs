@@ -20,7 +20,7 @@ public class WebsitesUpdate_ValidationTests(ApiTestFixture fixture) : WebsitesTe
         var updateRequest = WebsiteUpdateRequest.Empty()
             .WithId(websiteId)
             .WithName("") // Invalid empty name
-            .WithUrl("https://example.com");
+            .WithEndpoint("https://example.com");
 
         // Act
         var response = await Client.PutAsJsonAsync("/api/websites", updateRequest);
@@ -44,7 +44,7 @@ public class WebsitesUpdate_ValidationTests(ApiTestFixture fixture) : WebsitesTe
 
         // Arrange - Update with invalid URL
         var updateRequest = WebsiteUpdateRequest.Valid(websiteId)
-            .WithUrl("not-a-valid-url"); // Invalid URL format
+            .WithEndpoint("not-a-valid-url"); // Invalid URL format
 
         // Act
         var response = await Client.PutAsJsonAsync("/api/websites", updateRequest);

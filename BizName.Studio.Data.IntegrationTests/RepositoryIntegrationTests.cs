@@ -27,7 +27,7 @@ public class RepositoryIntegrationTests(TestFixture fixture) : IClassFixture<Tes
         {
             Id = Guid.NewGuid(),
             Name = "Test Website",
-            Url = "https://test.example.com"
+            Endpoint = "https://test.example.com"
         };
 
         // Create a test experience
@@ -35,8 +35,8 @@ public class RepositoryIntegrationTests(TestFixture fixture) : IClassFixture<Tes
         {
             Id = Guid.NewGuid(),
             Name = "Test Experience",
-            IsPublished = true,
-            WebsiteId = testWebsite.Id
+            IsActive = true,
+            SourceId = testWebsite.Id
         };
 
         // Act & Assert
@@ -52,14 +52,14 @@ public class RepositoryIntegrationTests(TestFixture fixture) : IClassFixture<Tes
         var retrievedWebsite = await websiteRepository.GetAsync(testTenant.Id, w => w.Id == testWebsite.Id);
         Assert.NotNull(retrievedWebsite);
         Assert.Equal(testWebsite.Name, retrievedWebsite.Name);
-        Assert.Equal(testWebsite.Url, retrievedWebsite.Url);
+        Assert.Equal(testWebsite.Endpoint, retrievedWebsite.Endpoint);
 
         // 3. Create experience (tenant-level partition)
         await experienceRepository.AddAsync(testTenant.Id, testExperience);
         var retrievedExperience = await experienceRepository.GetAsync(testTenant.Id, e => e.Id == testExperience.Id);
         Assert.NotNull(retrievedExperience);
         Assert.Equal(testExperience.Name, retrievedExperience.Name);
-        Assert.Equal(testExperience.IsPublished, retrievedExperience.IsPublished);
+        Assert.Equal(testExperience.IsActive, retrievedExperience.IsActive);
 
         // 4. List operations
         var tenantWebsites = await websiteRepository.ListAsync(testTenant.Id);
@@ -99,8 +99,8 @@ public class RepositoryIntegrationTests(TestFixture fixture) : IClassFixture<Tes
         var tenant1 = Tenant.New(Guid.NewGuid(), "Tenant 1");
         var tenant2 = Tenant.New(Guid.NewGuid(), "Tenant 2");
 
-        var website1 = new Website { Id = Guid.NewGuid(), Name = "Website 1", Url = "https://site1.com" };
-        var website2 = new Website { Id = Guid.NewGuid(), Name = "Website 2", Url = "https://site2.com" };
+        var website1 = new Website { Id = Guid.NewGuid(), Name = "Website 1", Endpoint = "https://site1.com" };
+        var website2 = new Website { Id = Guid.NewGuid(), Name = "Website 2", Endpoint = "https://site2.com" };
 
         // Act
         await tenantRepository.AddAsync(tenant1);

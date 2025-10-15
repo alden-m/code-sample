@@ -20,7 +20,7 @@ public class WebsitesUpdate_SuccessTests(ApiTestFixture fixture) : WebsitesTestB
         // Arrange - Prepare update
         var updateRequest = WebsiteUpdateRequest.Valid(websiteId)
             .WithName("Updated Website Name")
-            .WithUrl("https://updated-example.com");
+            .WithEndpoint("https://updated-example.com");
 
         // Act
         var updateResponse = await Client.PutAsJsonAsync("/api/websites", updateRequest);
@@ -31,13 +31,13 @@ public class WebsitesUpdate_SuccessTests(ApiTestFixture fixture) : WebsitesTestB
         updatedResult.Should().NotBeNull();
         updatedResult!.Id.Should().Be(websiteId);
         updatedResult.Name.Should().Be("Updated Website Name");
-        updatedResult.Url.Should().Be("https://updated-example.com");
+        updatedResult.Endpoint.Should().Be("https://updated-example.com");
 
         // Assert - Verify persistence
         var getResponse = await Client.GetAsync($"/api/websites/{websiteId}");
         getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
         var retrievedWebsite = await getResponse.Content.ReadFromJsonAsync<WebsiteResponse>();
         retrievedWebsite!.Name.Should().Be("Updated Website Name");
-        retrievedWebsite.Url.Should().Be("https://updated-example.com");
+        retrievedWebsite.Endpoint.Should().Be("https://updated-example.com");
     }
 }

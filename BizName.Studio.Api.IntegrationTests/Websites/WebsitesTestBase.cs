@@ -23,7 +23,7 @@ public abstract class WebsitesTestBase(ApiTestFixture fixture) : IClassFixture<A
 
     protected async Task<Guid> CreateTestExperience(Guid websiteId)
     {
-        var experience = ExperienceCreateRequest.Valid().WithWebsiteId(websiteId);
+        var experience = ExperienceCreateRequest.Valid().WithSourceId(websiteId);
         var response = await Client.PostAsJsonAsync("/api/experiences", experience);
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadFromJsonAsync<Guid>();

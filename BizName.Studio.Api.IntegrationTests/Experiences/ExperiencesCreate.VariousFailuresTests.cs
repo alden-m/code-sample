@@ -27,7 +27,7 @@ public class ExperiencesCreate_VariousFailuresTests(ApiTestFixture fixture) : Ex
         // Arrange
         var nonExistentWebsiteId = Guid.NewGuid();
         var experience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(nonExistentWebsiteId);
+            .WithSourceId(nonExistentWebsiteId);
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/experiences", experience);

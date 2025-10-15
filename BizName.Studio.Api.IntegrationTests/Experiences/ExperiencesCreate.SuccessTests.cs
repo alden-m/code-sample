@@ -14,7 +14,7 @@ public class ExperiencesCreate_SuccessTests(ApiTestFixture fixture) : Experience
         // Arrange
         var websiteId = await CreateTestWebsite();
         var experience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(websiteId);
+            .WithSourceId(websiteId);
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/experiences", experience);
@@ -29,7 +29,7 @@ public class ExperiencesCreate_SuccessTests(ApiTestFixture fixture) : Experience
         // Arrange
         var websiteId = await CreateTestWebsite();
         var experience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(websiteId);
+            .WithSourceId(websiteId);
 
         // Act
         var response = await Client.PostAsJsonAsync("/api/experiences", experience);
@@ -45,7 +45,7 @@ public class ExperiencesCreate_SuccessTests(ApiTestFixture fixture) : Experience
         // Arrange
         var websiteId = await CreateTestWebsite();
         var experience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(websiteId);
+            .WithSourceId(websiteId);
         var createResponse = await Client.PostAsJsonAsync("/api/experiences", experience);
         var experienceId = await createResponse.Content.ReadFromJsonAsync<Guid>();
 
@@ -62,9 +62,9 @@ public class ExperiencesCreate_SuccessTests(ApiTestFixture fixture) : Experience
         // Arrange
         var websiteId = await CreateTestWebsite();
         var experience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(websiteId)
+            .WithSourceId(websiteId)
             .WithName("Test Experience")
-            .WithIsPublished(false);
+            .WithIsActive(false);
         
         // Act
         var createResponse = await Client.PostAsJsonAsync("/api/experiences", experience);
@@ -74,8 +74,8 @@ public class ExperiencesCreate_SuccessTests(ApiTestFixture fixture) : Experience
 
         // Assert - Only test property values
         retrievedExperience!.Name.Should().Be("Test Experience");
-        retrievedExperience.WebsiteId.Should().Be(websiteId);
-        retrievedExperience.IsPublished.Should().BeFalse();
+        retrievedExperience.SourceId.Should().Be(websiteId);
+        retrievedExperience.IsActive.Should().BeFalse();
     }
 
     [Fact]
@@ -84,7 +84,7 @@ public class ExperiencesCreate_SuccessTests(ApiTestFixture fixture) : Experience
         // Arrange
         var websiteId = await CreateTestWebsite();
         var experience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(websiteId);
+            .WithSourceId(websiteId);
         
         // Act
         var createResponse = await Client.PostAsJsonAsync("/api/experiences", experience);
@@ -93,8 +93,8 @@ public class ExperiencesCreate_SuccessTests(ApiTestFixture fixture) : Experience
         var retrievedExperience = await getResponse.Content.ReadFromJsonAsync<ExperienceResponse>();
 
         // Assert - Only test default collections
-        retrievedExperience!.Actions.Should().BeEmpty();
-        retrievedExperience.Conditions.Should().BeEmpty();
+        retrievedExperience!.Transformations.Should().BeEmpty();
+        retrievedExperience.Rules.Should().BeEmpty();
     }
 
     [Fact]
@@ -103,7 +103,7 @@ public class ExperiencesCreate_SuccessTests(ApiTestFixture fixture) : Experience
         // Arrange
         var websiteId = await CreateTestWebsite();
         var experience = ExperienceCreateRequest.Valid()
-            .WithWebsiteId(websiteId)
+            .WithSourceId(websiteId)
             .WithInsertHtmlAction();
         
         // Act
@@ -120,8 +120,8 @@ public class ExperiencesCreate_SuccessTests(ApiTestFixture fixture) : Experience
             var retrievedExperience = await getResponse.Content.ReadFromJsonAsync<ExperienceResponse>();
 
             getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            retrievedExperience!.Actions.Should().HaveCount(1);
-            retrievedExperience.Actions.First().Should().NotBeNull();
+            retrievedExperience!.Transformations.Should().HaveCount(1);
+            retrievedExperience.Transformations.First().Should().NotBeNull();
         }
     }
 }

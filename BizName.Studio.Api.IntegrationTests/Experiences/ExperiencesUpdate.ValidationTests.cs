@@ -13,14 +13,14 @@ public class ExperiencesUpdate_ValidationTests(ApiTestFixture fixture) : Experie
     {
         // Arrange - Create initial experience
         var websiteId = await CreateTestWebsite();
-        var initialExperience = ExperienceCreateRequest.Valid().WithWebsiteId(websiteId);
+        var initialExperience = ExperienceCreateRequest.Valid().WithSourceId(websiteId);
         var createResponse = await Client.PostAsJsonAsync("/api/experiences", initialExperience);
         var experienceId = await createResponse.Content.ReadFromJsonAsync<Guid>();
 
         // Arrange - Update with missing name
         var updateRequest = ExperienceUpdateRequest.Empty()
             .WithId(experienceId)
-            .WithWebsiteId(websiteId)
+            .WithSourceId(websiteId)
             .WithName(""); // Invalid empty name
 
         // Act
@@ -40,14 +40,14 @@ public class ExperiencesUpdate_ValidationTests(ApiTestFixture fixture) : Experie
     {
         // Arrange - Create initial experience
         var websiteId = await CreateTestWebsite();
-        var initialExperience = ExperienceCreateRequest.Valid().WithWebsiteId(websiteId);
+        var initialExperience = ExperienceCreateRequest.Valid().WithSourceId(websiteId);
         var createResponse = await Client.PostAsJsonAsync("/api/experiences", initialExperience);
         var experienceId = await createResponse.Content.ReadFromJsonAsync<Guid>();
 
         // Arrange - Update with null name
         var updateRequest = ExperienceUpdateRequest.Empty()
             .WithId(experienceId)
-            .WithWebsiteId(websiteId)
+            .WithSourceId(websiteId)
             .WithName(null); // Invalid null name
 
         // Act
@@ -68,13 +68,13 @@ public class ExperiencesUpdate_ValidationTests(ApiTestFixture fixture) : Experie
     {
         // Arrange - Create initial experience
         var websiteId = await CreateTestWebsite();
-        var initialExperience = ExperienceCreateRequest.Valid().WithWebsiteId(websiteId);
+        var initialExperience = ExperienceCreateRequest.Valid().WithSourceId(websiteId);
         var createResponse = await Client.PostAsJsonAsync("/api/experiences", initialExperience);
         var experienceId = await createResponse.Content.ReadFromJsonAsync<Guid>();
 
         // Arrange - Update with empty website ID
         var updateRequest = ExperienceUpdateRequest.Valid(experienceId)
-            .WithWebsiteId(Guid.Empty); // Empty GUID
+            .WithSourceId(Guid.Empty); // Empty GUID
 
         // Act
         var response = await Client.PutAsJsonAsync("/api/experiences", updateRequest);
@@ -93,13 +93,13 @@ public class ExperiencesUpdate_ValidationTests(ApiTestFixture fixture) : Experie
     {
         // Arrange - Create initial experience
         var websiteId = await CreateTestWebsite();
-        var initialExperience = ExperienceCreateRequest.Valid().WithWebsiteId(websiteId);
+        var initialExperience = ExperienceCreateRequest.Valid().WithSourceId(websiteId);
         var createResponse = await Client.PostAsJsonAsync("/api/experiences", initialExperience);
         var experienceId = await createResponse.Content.ReadFromJsonAsync<Guid>();
 
         // Arrange - Update with name exceeding max length
         var updateRequest = ExperienceUpdateRequest.Valid(experienceId)
-            .WithWebsiteId(websiteId)
+            .WithSourceId(websiteId)
             .WithName(new string('a', 256)); // Assuming max length is 255
 
         // Act
