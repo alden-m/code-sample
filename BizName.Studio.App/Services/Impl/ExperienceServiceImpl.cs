@@ -26,13 +26,13 @@ internal class ExperienceServiceImpl(IPartitionedRepository<Experience> expRepo,
             return validationResult.ToOperationResult<Guid>();
         }
 
-        // Validate referential integrity - WebsiteId must exist
-        logger.LogDebug("Validating website {WebsiteId} exists for tenant {TenantId}", experience.WebsiteId, tenantId);
-        var websiteResult = await websiteService.GetWebsiteById(tenantId, experience.WebsiteId);
+        // Validate referential integrity - SourceId must exist
+        logger.LogDebug("Validating website {WebsiteId} exists for tenant {TenantId}", experience.SourceId, tenantId);
+        var websiteResult = await websiteService.GetWebsiteById(tenantId, experience.SourceId);
         if (!websiteResult.Success)
         {
-            logger.LogWarning("Website {WebsiteId} not found for tenant {TenantId}", experience.WebsiteId, tenantId);
-            return OperationResult<Guid>.ValidationFailure($"Website with ID {experience.WebsiteId} does not exist or you don't have access to it");
+            logger.LogWarning("Website {WebsiteId} not found for tenant {TenantId}", experience.SourceId, tenantId);
+            return OperationResult<Guid>.ValidationFailure($"Website with ID {experience.SourceId} does not exist or you don't have access to it");
         }
 
         // Ensure Id is set
@@ -55,7 +55,7 @@ internal class ExperienceServiceImpl(IPartitionedRepository<Experience> expRepo,
             
         logger.LogDebug("Listing experiences for tenant {TenantId} and website {WebsiteId}", tenantId, websiteId);
         
-        var experiences = await expRepo.ListAsync(tenantId, x => x.WebsiteId == websiteId);
+        var experiences = await expRepo.ListAsync(tenantId, x => x.SourceId == websiteId);
         logger.LogDebug("Found {ExperienceCount} experiences for tenant {TenantId} and website {WebsiteId}", experiences.Count(), tenantId, websiteId);
         return OperationResult<IEnumerable<Experience>>.SuccessResult(experiences);
     }
@@ -85,7 +85,7 @@ internal class ExperienceServiceImpl(IPartitionedRepository<Experience> expRepo,
         if (websiteId == Guid.Empty) throw new ArgumentException("WebsiteId cannot be empty", nameof(websiteId));
             
         logger.LogDebug("Listing published experiences for tenant {TenantId} and website {WebsiteId}", tenantId, websiteId);
-        var experiences = await expRepo.ListAsync(tenantId, x => x.WebsiteId == websiteId && x.IsPublished);
+        var experiences = await expRepo.ListAsync(tenantId, x => x.SourceId == websiteId && x.IsActive);
         logger.LogDebug("Found {PublishedExperienceCount} published experiences for tenant {TenantId} and website {WebsiteId}", experiences.Count(), tenantId, websiteId);
         return OperationResult<IEnumerable<Experience>>.SuccessResult(experiences);
     }
@@ -114,25 +114,25 @@ internal class ExperienceServiceImpl(IPartitionedRepository<Experience> expRepo,
             return validationResult.ToOperationResult<Experience>();
         }
 
-        // Validate referential integrity if WebsiteId is changing
-        if (existingExperience.WebsiteId != updatedExperience.WebsiteId)
+        // Validate referential integrity if SourceId is changing
+        if (existingExperience.SourceId != updatedExperience.SourceId)
         {
-            logger.LogDebug("Website ID changing for experience {ExperienceId}, validating new website {WebsiteId}", experienceId, updatedExperience.WebsiteId);
-            var websiteResult = await websiteService.GetWebsiteById(tenantId, updatedExperience.WebsiteId);
+            logger.LogDebug("Website ID changing for experience {ExperienceId}, validating new website {WebsiteId}", experienceId, updatedExperience.SourceId);
+            var websiteResult = await websiteService.GetWebsiteById(tenantId, updatedExperience.SourceId);
             if (!websiteResult.Success)
             {
-                logger.LogWarning("New website {WebsiteId} not found for experience {ExperienceId} update", updatedExperience.WebsiteId, experienceId);
-                return OperationResult<Experience>.ValidationFailure($"Website with ID {updatedExperience.WebsiteId} does not exist or you don't have access to it");
+                logger.LogWarning("New website {WebsiteId} not found for experience {ExperienceId} update", updatedExperience.SourceId, experienceId);
+                return OperationResult<Experience>.ValidationFailure($"Website with ID {updatedExperience.SourceId} does not exist or you don't have access to it");
             }
         }
 
         // Update all experience properties
         existingExperience.Name = updatedExperience.Name;
-        existingExperience.IsPublished = updatedExperience.IsPublished;
-        existingExperience.Conditions = updatedExperience.Conditions;
-        existingExperience.Actions = updatedExperience.Actions;
-        existingExperience.WebsiteId = updatedExperience.WebsiteId;
-        existingExperience.Metadata = updatedExperience.Metadata;
+        existingExperience.IsActive = updatedExperience.IsActive;
+        existingExperience.Rules = updatedExperience.Rules;
+        existingExperience.Transformations = updatedExperience.Transformations;
+        existingExperience.SourceId = updatedExperience.SourceId;
+        existingExperience.Configuration = updatedExperience.Configuration;
 
         await expRepo.UpdateAsync(tenantId, existingExperience);
         

@@ -117,7 +117,7 @@ internal class WebsiteServiceImpl(IPartitionedRepository<Website> websiteRepo, I
         // Update the website's properties
         existingWebsite.Name = website.Name;
         existingWebsite.Description = website.Description;
-        existingWebsite.Url = website.Url;
+        existingWebsite.Endpoint = website.Endpoint;
         // Preserve original creation date, update only the UpdatedAt timestamp
         existingWebsite.UpdatedAt = DateTimeOffset.UtcNow;
 
@@ -147,7 +147,7 @@ internal class WebsiteServiceImpl(IPartitionedRepository<Website> websiteRepo, I
         }
 
         // Check if any experiences exist for this website
-        var experiences = await experienceRepo.ListAsync(tenantId, x => x.WebsiteId == websiteId);
+        var experiences = await experienceRepo.ListAsync(tenantId, x => x.SourceId == websiteId);
         if (experiences.Any())
         {
             logger.LogWarning("Cannot delete website {WebsiteId} for tenant {TenantId}: {ExperienceCount} experiences exist", websiteId, tenantId, experiences.Count());

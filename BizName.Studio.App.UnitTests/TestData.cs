@@ -12,10 +12,10 @@ public static class TestData
     {
         Id = _faker.Random.Guid(),
         Name = _faker.Commerce.ProductName(),
-        WebsiteId = _faker.Random.Guid(),
-        IsPublished = _faker.Random.Bool(),
-        Conditions = [],
-        Actions = []
+        SourceId = _faker.Random.Guid(),
+        IsActive = _faker.Random.Bool(),
+        Rules = [],
+        Transformations = []
     };
 
     public static Tenant NewTenant => Tenant.New(_faker.Random.Guid(), _faker.Company.CompanyName());
@@ -24,6 +24,6 @@ public static class TestData
     {
         Id = _faker.Random.Guid(),
         Name = _faker.Internet.DomainName(),
-        Url = _faker.Internet.Url()
+        Endpoint = _faker.Internet.Url()
     };
 }

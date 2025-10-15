@@ -70,7 +70,7 @@ public class ExperienceServiceImplCreateTests
         var tenantId = Guid.NewGuid();
         var websiteId = Guid.NewGuid();
         var experience = TestData.NewExperience;
-        experience.WebsiteId = websiteId;
+        experience.SourceId = websiteId;
         _mockValidator.ValidateAsync(experience).Returns(new FluentValidation.Results.ValidationResult());
         _mockWebsiteService.GetWebsiteById(tenantId, websiteId)
             .Returns(OperationResult<Website>.NotFoundFailure("Website not found"));
@@ -92,7 +92,7 @@ public class ExperienceServiceImplCreateTests
         var websiteId = Guid.NewGuid();
         var experience = TestData.NewExperience;
         experience.Id = Guid.Empty;
-        experience.WebsiteId = websiteId;
+        experience.SourceId = websiteId;
         _mockValidator.ValidateAsync(experience).Returns(new FluentValidation.Results.ValidationResult());
         _mockWebsiteService.GetWebsiteById(tenantId, websiteId)
             .Returns(OperationResult<Website>.SuccessResult(new Website()));

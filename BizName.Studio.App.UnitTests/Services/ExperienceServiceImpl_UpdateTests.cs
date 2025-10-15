@@ -63,20 +63,20 @@ public class ExperienceServiceImplUpdateTests
     }
 
     [Fact]
-    public async Task UpdateExperience_WebsiteIdChanged_ValidatesNewWebsite()
+    public async Task UpdateExperience_SourceIdChanged_ValidatesNewWebsite()
     {
         // Arrange
         var tenantId = Guid.NewGuid();
         var experienceId = Guid.NewGuid();
         var existingExperience = TestData.NewExperience;
         var updatedExperience = TestData.NewExperience;
-        var newWebsiteId = Guid.NewGuid();
-        updatedExperience.WebsiteId = newWebsiteId;
+        var newSourceId = Guid.NewGuid();
+        updatedExperience.SourceId = newSourceId;
         
         _mockExpRepo.GetAsync(tenantId, Arg.Any<Expression<Func<Experience, bool>>>())
             .Returns(existingExperience);
         _mockValidator.ValidateAsync(updatedExperience).Returns(new FluentValidation.Results.ValidationResult());
-        _mockWebsiteService.GetWebsiteById(tenantId, newWebsiteId)
+        _mockWebsiteService.GetWebsiteById(tenantId, newSourceId)
             .Returns(OperationResult<Website>.NotFoundFailure("Website not found"));
 
         // Act
@@ -101,7 +101,7 @@ public class ExperienceServiceImplUpdateTests
         
         var updatedExperience = TestData.NewExperience; // Get a fresh instance with different random values
         updatedExperience.Id = originalId; // Set original ID
-        updatedExperience.WebsiteId = existingExperience.WebsiteId; // Keep same website to avoid validation
+        updatedExperience.SourceId = existingExperience.SourceId; // Keep same website to avoid validation
         
         _mockExpRepo.GetAsync(tenantId, Arg.Any<Expression<Func<Experience, bool>>>())
             .Returns(existingExperience);
